@@ -7,31 +7,28 @@ class App extends React.Component {
   state = {
     text: '',
     textLength: '',
-    textEntered: false
   }
 
   changeHandler = (e) => {
     this.setState({text: e.target.value,
-      textLength: e.target.value.length,
-      textEntered: true})
+      textLength: e.target.value.length,})
   }
 
-  removeChar = (textArr, index) => {
-    textArr.splice(index, 1)
-    this.setState({text: textArr.join('')})
+  removeChar = (index) => {
+    let splitText = this.state.text.split('')
+    splitText.splice(index, 1)
+    this.setState({text: splitText.join('')})
   }
 
   render(){
     let chars = null
 
      if(this.state.textLength > 0 ){
-      let text = this.state.text
-      let textArr = text.split('')
-  
-      chars = textArr.map((c, index) => {
+     
+      chars = this.state.text.split('').map((c, index) => {
         return <CharComponent letter={c}
         key={index}
-        remove={() => this.removeChar(textArr, index)}/>
+        remove={() => this.removeChar(index)}/>
       })
     }
 
@@ -40,7 +37,7 @@ class App extends React.Component {
         <h1> Enter the text in the input field</h1>
         <input type='text' onChange={this.changeHandler.bind(this)}/>
         <p> Length of text is: {this.state.textLength}</p>
-        {this.state.textEntered && 
+        {
           <ValidationComponent textLength={this.state.textLength}/>
         }
         {chars}
